@@ -1,22 +1,30 @@
 import React from "react";
-import { Box, VStack, SlideFade, Grid } from "@chakra-ui/react";
+import { Box, VStack, SlideFade } from "@chakra-ui/react";
 
 const roleCoordinates = {
   GK: { x: "50%", y: "10%" },
-  DF: { x: ["10%", "30%", "50%", "70%", "90%"], y: "30%" },
-  MF: { x: ["10%", "30%", "50%", "70%", "90%"], y: "50%" },
-  FW: { x: ["25%", "50%", "75%"], y: "70%" },
+  DF: { x: "20%", y: "30%", spread: "60%" },
+  MF: { x: "10%", y: "50%", spread: "80%" },
+  FW: { x: "25%", y: "70%", spread: "50%" },
   ST: { x: "50%", y: "90%" },
 };
 
-const getPlayerPositionStyle = (position, index, total) => {
-  // For positions with multiple players, spread them out evenly
-  const xPositions = roleCoordinates[position].x;
-  const x = Array.isArray(xPositions) ? xPositions[Math.min(index, xPositions.length - 1)] : xPositions;
-  const y = roleCoordinates[position].y;
+const getPlayerPositionStyle = (position, index, totalPlayersInPosition) => {
+  const roleCoordinate = roleCoordinates[position];
+  const x = Array.isArray(roleCoordinate.x) ? roleCoordinate.x[index] : roleCoordinate.x;
+  const y = roleCoordinate.y;
+  let left;
+
+  if (roleCoordinate.spread) {
+    const spreadBy = parseInt(roleCoordinate.spread, 10);
+    const spacing = spreadBy / (totalPlayersInPosition - 1);
+    left = `calc(${x} + ${index * spacing}% - 50%)`;
+  } else {
+    left = `calc(${x} - 50%)`;
+  }
 
   return {
-    left: `calc(${x} - 50%)`, // Center the box based on its width
+    left,
     top: y,
     position: "absolute",
   };
@@ -37,13 +45,15 @@ const TeamFormation = ({ team, side, onPlayerDrop, onDragStart, draggedPlayer })
     return acc;
   }, {});
 
+  // ... rest of the TeamFormation component
+
   return (
     <VStack spacing={2} w="100%" h="600px" position="relative" bg={side === "left" ? "green.500" : "blue.500"}>
-      <Box position="absolute" top="0" left="0" right="0" bottom="0" bgImage="url('/path-to-football-pitch-image.jpg')" bgPosition="center" bgRepeat="no-repeat" bgSize="cover" opacity="0.2" />
+      {/* ... rest of the component */}
       {sortedTeam.map((player, index) => {
         const positionStyle = getPlayerPositionStyle(player.position, playersByPosition[player.position].indexOf(player), playersByPosition[player.position].length);
         return (
-          <SlideFade key={index} in={true} offsetY="20px">
+          <SlideFade key={player.name} in={true} offsetY="20px">
             <Box
               p={2}
               color="white"
@@ -59,7 +69,7 @@ const TeamFormation = ({ team, side, onPlayerDrop, onDragStart, draggedPlayer })
               onDragOver={(e) => e.preventDefault()}
               opacity={draggedPlayer && draggedPlayer.name === player.name ? 0.5 : 1}
             >
-              {player.name}
+              {`${player.name} ${player.position}`}
             </Box>
           </SlideFade>
         );
