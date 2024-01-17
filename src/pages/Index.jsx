@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { VStack, HStack, Box, Textarea, Button, Text, Heading, Image, useToast } from "@chakra-ui/react";
+import { VStack, HStack, Box, Textarea, Button, Text, Heading, useToast } from "@chakra-ui/react";
 import { FaFutbol } from "react-icons/fa";
+import TeamFormation from "../components/TeamFormation";
 
 // Helper function to shuffle array
 const shuffleArray = (array) => {
@@ -128,6 +129,10 @@ const Index = () => {
             </Box>
           ))}
         </VStack>
+      </HStack>
+      <HStack w="100%" justify="space-between" p={5}>
+        <TeamFormation team={teams.team1} />
+        <TeamFormation team={teams.team2} />
       </HStack>
     </VStack>
   );
