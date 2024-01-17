@@ -99,17 +99,16 @@ const Index = () => {
 
   const onDropPlayer = useCallback(
     (draggedPlayer, targetPlayer, targetTeam) => {
+      // Ensure targetTeam is either 'team1' or 'team2'
+      if (!["team1", "team2"].includes(targetTeam)) return;
+
       setTeams((prevTeams) => {
         const sourceTeam = draggedPlayer.team;
-        const destinationTeam = targetTeam === "team1" ? "team2" : "team1";
+        const destinationTeam = targetTeam;
 
-        // Swap players between teams
+        // Remove the dragged player from the source team and add to the destination team
         const updatedSourceTeam = prevTeams[sourceTeam].filter((p) => p.name !== draggedPlayer.name);
-        if (targetPlayer) {
-          updatedSourceTeam.push(targetPlayer);
-        }
-
-        const updatedDestinationTeam = prevTeams[destinationTeam].map((p) => (p.name === targetPlayer.name ? draggedPlayer : p));
+        const updatedDestinationTeam = targetPlayer ? prevTeams[destinationTeam].map((p) => (p.name === targetPlayer.name ? draggedPlayer : p)) : [...prevTeams[destinationTeam], draggedPlayer];
 
         // Sort both teams by position and update state
         return {
