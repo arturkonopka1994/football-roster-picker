@@ -170,9 +170,19 @@ const Index = () => {
           ))}
         </VStack>
       </HStack>
-      <HStack w="100%" justify="space-between" p={5}>
-        <TeamFormation team={teams.team1} side="left" onPlayerDrop={onDropPlayer} onDragStart={onDragStart} draggedPlayer={draggedPlayer} />
-        <TeamFormation team={teams.team2} side="right" onPlayerDrop={onDropPlayer} onDragStart={onDragStart} draggedPlayer={draggedPlayer} />
+      <HStack w="100%" justify="space-between" p={5} align="start">
+        <VStack w="48%">
+          <Text fontSize="2xl" fontWeight="bold" color="teal.500" mb={4}>
+            Team 1 - Total Skill: {teams.team1.reduce((total, player) => total + player.skill, 0)}
+          </Text>
+          <TeamFormation team={teams.team1} side="left" onPlayerDrop={onDropPlayer} onDragStart={onDragStart} draggedPlayer={draggedPlayer} />
+        </VStack>
+        <VStack w="48%">
+          <Text fontSize="2xl" fontWeight="bold" color="orange.500" mb={4}>
+            Team 2 - Total Skill: {teams.team2.reduce((total, player) => total + player.skill, 0)}
+          </Text>
+          <TeamFormation team={teams.team2} side="right" onPlayerDrop={onDropPlayer} onDragStart={onDragStart} draggedPlayer={draggedPlayer} />
+        </VStack>
       </HStack>
     </VStack>
   );
