@@ -108,7 +108,7 @@ const Index = () => {
 
         // Remove the dragged player from the source team and add to the destination team
         const updatedSourceTeam = prevTeams[sourceTeam].filter((p) => p.name !== draggedPlayer.name);
-        const updatedDestinationTeam = targetPlayer ? prevTeams[destinationTeam].map((p) => (p.name === targetPlayer.name ? draggedPlayer : p)) : [...prevTeams[destinationTeam], draggedPlayer];
+        const updatedDestinationTeam = targetPlayer ? prevTeams[destinationTeam].map((p) => (p.name === targetPlayer.name ? draggedPlayer : p.name === draggedPlayer.name ? targetPlayer : p)) : [...prevTeams[destinationTeam], draggedPlayer];
 
         // Sort both teams by position and update state
         return {
