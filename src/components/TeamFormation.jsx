@@ -27,15 +27,19 @@ const TeamFormation = ({ team, side, onPlayerDrop, onDragStart, draggedPlayer })
                 color="white"
                 borderRadius="md"
                 zIndex="1"
-                draggable
-                onDragStart={() => onDragStart({ ...player, team: side === "left" ? "team1" : "team2" })}
+                draggable="true"
+                onDragStart={(e) => onDragStart({ ...player, team: side === "left" ? "team1" : "team2" })}
                 onDrop={(e) => {
                   e.preventDefault();
+                  e.stopPropagation();
                   if (draggedPlayer && draggedPlayer.name !== player.name) {
-                    onPlayerDrop(draggedPlayer, side === "left" ? "team1" : "team2");
+                    onPlayerDrop(draggedPlayer, player, side === "left" ? "team1" : "team2");
                   }
                 }}
-                onDragOver={(e) => e.preventDefault()}
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
                 opacity={draggedPlayer && draggedPlayer.name === player.name ? 0.5 : 1}
               >
                 {`${player.name} ${player.position}`}

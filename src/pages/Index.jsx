@@ -98,29 +98,33 @@ const Index = () => {
   };
 
   const onDropPlayer = useCallback(
-    (draggedPlayer, targetTeam) => {
+    (draggedPlayer, targetPlayer, targetTeam) => {
       setTeams((prevTeams) => {
-        const draggedPlayerTeam = draggedPlayer.team;
+        const sourceTeam = draggedPlayer.team;
+        const destinationTeam = targetTeam;
 
-        // If players are from different teams, swap them
-        if (draggedPlayerTeam !== targetTeam) {
-          // Remove the dragged player from their old team
-          const newDraggedPlayerTeamPlayers = prevTeams[draggedPlayerTeam].filter((p) => p.name !== draggedPlayer.name);
-          // Add the dragged player to the target team
-          const newTargetPlayerTeamPlayers = [...prevTeams[targetTeam], draggedPlayer].sort(sortPlayersByPosition);
+        if (sourceTeam !== destinationTeam) {
+          // Find and remove the dragged player from the source team
+          const updatedSourceTeam = prevTeams[sourceTeam].filter((p) => p.name !== draggedPlayer.name);
+          // Find and remove the target player from the destination team, if exists
+          const updatedDestinationTeam = prevTeams[destinationTeam].filter((p) => p.name !== targetPlayer.name);
 
-          // Update the teams state with new arrays
+          // Add the dragged player to the destination team
+          updatedDestinationTeam.push(draggedPlayer);
+          // Add the target player to the source team, if exists
+          if (targetPlayer.name) updatedSourceTeam.push(targetPlayer);
+
+          // Sort both teams by position and update state
           return {
             ...prevTeams,
-            [draggedPlayerTeam]: newDraggedPlayerTeamPlayers.sort(sortPlayersByPosition),
-            [targetTeam]: newTargetPlayerTeamPlayers,
+            [sourceTeam]: updatedSourceTeam.sort(sortPlayersByPosition),
+            [destinationTeam]: updatedDestinationTeam.sort(sortPlayersByPosition),
           };
         }
+
         return prevTeams;
       });
-
-      // Reset the dragged player state
-      setDraggedPlayer(null);
+      setDraggedPlayer(null); // Reset the dragged player state after drop
     },
     [sortPlayersByPosition],
   );
