@@ -32,7 +32,7 @@ const TeamFormation = ({ team, side, onPlayerDrop, onDragStart, draggedPlayer })
                 onDrop={(e) => {
                   e.preventDefault();
                   if (draggedPlayer && draggedPlayer.name !== player.name) {
-                    onPlayerDrop(draggedPlayer, player);
+                    onPlayerDrop(draggedPlayer, side === "left" ? "team1" : "team2");
                   }
                 }}
                 onDragOver={(e) => e.preventDefault()}

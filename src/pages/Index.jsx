@@ -98,22 +98,22 @@ const Index = () => {
   };
 
   const onDropPlayer = useCallback(
-    (draggedPlayer, targetPlayer) => {
+    (draggedPlayer, targetTeam) => {
       setTeams((prevTeams) => {
-        // Determine the current teams of the players
         const draggedPlayerTeam = draggedPlayer.team;
-        const targetPlayerTeam = targetPlayer.team;
 
         // If players are from different teams, swap them
-        if (draggedPlayerTeam !== targetPlayerTeam) {
-          const newDraggedPlayerTeamPlayers = prevTeams[draggedPlayerTeam].map((p) => (p.name === draggedPlayer.name ? { ...targetPlayer, team: draggedPlayerTeam } : p));
-          const newTargetPlayerTeamPlayers = prevTeams[targetPlayerTeam].map((p) => (p.name === targetPlayer.name ? { ...draggedPlayer, team: targetPlayerTeam } : p));
+        if (draggedPlayerTeam !== targetTeam) {
+          // Remove the dragged player from their old team
+          const newDraggedPlayerTeamPlayers = prevTeams[draggedPlayerTeam].filter((p) => p.name !== draggedPlayer.name);
+          // Add the dragged player to the target team
+          const newTargetPlayerTeamPlayers = [...prevTeams[targetTeam], draggedPlayer].sort(sortPlayersByPosition);
 
           // Update the teams state with new arrays
           return {
             ...prevTeams,
             [draggedPlayerTeam]: newDraggedPlayerTeamPlayers.sort(sortPlayersByPosition),
-            [targetPlayerTeam]: newTargetPlayerTeamPlayers.sort(sortPlayersByPosition),
+            [targetTeam]: newTargetPlayerTeamPlayers,
           };
         }
         return prevTeams;
