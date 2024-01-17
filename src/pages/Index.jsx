@@ -37,18 +37,11 @@ const Index = () => {
     const team1 = [];
     const team2 = [];
 
-    // Distribute goalkeepers evenly if possible
+    // Ensure there is always one goalkeeper in each team if two are available
     if (goalkeepers.length >= 2) {
       team1.push(goalkeepers[0]);
       team2.push(goalkeepers[1]);
-    } else if (goalkeepers.length === 1) {
-      // Randomly assign the single goalkeeper to one of the teams
-      if (Math.random() < 0.5) {
-        team1.push(goalkeepers[0]);
-      } else {
-        team2.push(goalkeepers[0]);
-      }
-    }
+    } // No need for an else condition, as we only ensure distribution when at least two goalkeepers are available
 
     // Distribute other players based on skill
     otherPlayers.forEach((player, index) => {
