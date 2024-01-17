@@ -103,14 +103,12 @@ const Index = () => {
       if (!["team1", "team2"].includes(targetTeam)) return;
 
       setTeams((prevTeams) => {
-        const sourceTeam = draggedPlayer.team === "team1" ? "team1" : "team2";
-        const destinationTeam = targetTeam === "team1" ? "team1" : "team2";
+        const sourceTeam = draggedPlayer.team;
+        const destinationTeam = targetTeam;
 
-        // Remove the dragged player from the source team
+        // Remove the dragged player from the source team and add to the destination team
         const updatedSourceTeam = prevTeams[sourceTeam].filter((p) => p.name !== draggedPlayer.name);
-
-        // If the target player exists, remove it from the destination team and add it to the source team
-        const updatedDestinationTeam = targetPlayer ? prevTeams[destinationTeam].filter((p) => p.name !== targetPlayer.name).concat(draggedPlayer) : prevTeams[destinationTeam].concat(draggedPlayer);
+        const updatedDestinationTeam = targetPlayer ? prevTeams[destinationTeam].map((p) => (p.name === targetPlayer.name ? draggedPlayer : p)) : [...prevTeams[destinationTeam], draggedPlayer];
 
         // Sort both teams by position and update state
         return {
@@ -119,7 +117,7 @@ const Index = () => {
           [destinationTeam]: updatedDestinationTeam.sort(sortPlayersByPosition),
         };
       });
-      // Removed the duplicated line that resets the dragged player state after drop
+      setDraggedPlayer(null); // Reset the dragged player state after drop
     },
     [sortPlayersByPosition],
   );
