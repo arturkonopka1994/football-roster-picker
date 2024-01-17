@@ -100,14 +100,14 @@ const Index = () => {
   const onDropPlayer = useCallback(
     (draggedPlayer, targetPlayer, targetTeam) => {
       setTeams((prevTeams) => {
-        const sourceTeam = draggedPlayer.team;
-        const destinationTeam = targetTeam;
+        // Ensure that team names are correctly used when accessing prevTeams
+        const sourceTeam = draggedPlayer.team === "team1" ? "team1" : "team2";
+        const destinationTeam = targetTeam === "team1" ? "team1" : "team2";
 
         if (sourceTeam !== destinationTeam) {
-          // Find and remove the dragged player from the source team
-          const updatedSourceTeam = prevTeams[sourceTeam].filter((p) => p.name !== draggedPlayer.name);
-          // Find and remove the target player from the destination team, if exists
-          const updatedDestinationTeam = prevTeams[destinationTeam].filter((p) => p.name !== targetPlayer.name);
+          // Check if the teams exist in the prevTeams object before attempting to filter
+          const updatedSourceTeam = prevTeams[sourceTeam] ? prevTeams[sourceTeam].filter((p) => p.name !== draggedPlayer.name) : [];
+          const updatedDestinationTeam = prevTeams[destinationTeam] ? prevTeams[destinationTeam].filter((p) => p.name !== targetPlayer.name) : [];
 
           // Add the dragged player to the destination team
           updatedDestinationTeam.push(draggedPlayer);
