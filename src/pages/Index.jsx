@@ -59,7 +59,17 @@ const Index = () => {
       }
     });
 
-    // Set teams
+    // Sorting function to order players by position
+    const sortPlayersByPosition = (a, b) => {
+      const positionOrder = ["GK", "DF", "MF", "FW"];
+      return positionOrder.indexOf(a.position) - positionOrder.indexOf(b.position);
+    };
+
+    // Apply sorting to teams
+    team1.sort(sortPlayersByPosition);
+    team2.sort(sortPlayersByPosition);
+
+    // Set sorted teams
     setTeams({ team1, team2 });
 
     // Show toast notification
