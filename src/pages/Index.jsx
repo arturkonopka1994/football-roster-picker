@@ -37,12 +37,17 @@ const Index = () => {
     const team1 = [];
     const team2 = [];
 
-    // Distribute goalkeepers
+    // Distribute goalkeepers evenly if possible
     if (goalkeepers.length >= 2) {
       team1.push(goalkeepers[0]);
       team2.push(goalkeepers[1]);
     } else if (goalkeepers.length === 1) {
-      team1.push(goalkeepers[0]);
+      // Randomly assign the single goalkeeper to one of the teams
+      if (Math.random() < 0.5) {
+        team1.push(goalkeepers[0]);
+      } else {
+        team2.push(goalkeepers[0]);
+      }
     }
 
     // Distribute other players based on skill
