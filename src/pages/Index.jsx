@@ -23,6 +23,7 @@ const sortPlayersByPosition = (playerA, playerB) => {
 };
 
 const Index = () => {
+  const [isTeamsPicked, setIsTeamsPicked] = useState(false); // New state to track if teams have been picked
   const [draggedPlayer, setDraggedPlayer] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const [teams, setTeams] = useState({ team1: [], team2: [] });
@@ -141,9 +142,19 @@ const Index = () => {
         Enter player details (Name, Skill Level, Position):
       </Text>
       <Textarea placeholder="Artur, 5, MF" value={inputValue} onChange={handleInputChange} size="sm" />
-      <Button leftIcon={<FaFutbol />} colorScheme="blue" onClick={pickTeams}>
+      <Button
+        leftIcon={<FaFutbol />}
+        colorScheme="blue"
+        onClick={() => {
+          pickTeams();
+          setIsTeamsPicked(true);
+        }}
+      >
         Pick Teams
       </Button>
+
+      {/* Conditional rendering based on isTeamsPicked state */}
+      {isTeamsPicked && <>{/* Rest of the elements that should be hidden initially */}</>}
 
       <HStack w="100%" justify="space-between" p={5}>
         <VStack w="48%">
