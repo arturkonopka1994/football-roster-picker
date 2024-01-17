@@ -102,7 +102,10 @@ const Index = () => {
       setTeams((prevTeams) => {
         const sourceTeam = player.team === "team1" ? "team2" : "team1";
         const sourceTeamPlayers = prevTeams[sourceTeam].filter((p) => p.name !== player.name);
-        const targetTeamPlayers = [...prevTeams[targetTeam], player].sort(sortPlayersByPosition);
+        const targetTeamPlayers = prevTeams[targetTeam]
+          .filter((p) => p.name !== player.name)
+          .concat(player)
+          .sort(sortPlayersByPosition);
 
         return {
           ...prevTeams,
