@@ -57,8 +57,18 @@ const Index = () => {
 
     // Split other players into two teams based on skill trying to balance the total skill of each team
     const teamSkills = { team1: 0, team2: 0 };
+    // Split other players into two teams considering both skill balance and team size
     otherPlayers.forEach((player) => {
-      if (teamSkills.team1 <= teamSkills.team2) {
+      const isTeam1SmallerOrEqual = team1.length <= team2.length;
+      const isSkillLowerOrEqualTeam1 = teamSkills.team1 <= teamSkills.team2;
+
+      if (isTeam1SmallerOrEqual && isSkillLowerOrEqualTeam1) {
+        team1.push(player);
+        teamSkills.team1 += player.skill;
+      } else if (!isTeam1SmallerOrEqual && !isSkillLowerOrEqualTeam1) {
+        team2.push(player);
+        teamSkills.team2 += player.skill;
+      } else if (isTeam1SmallerOrEqual) {
         team1.push(player);
         teamSkills.team1 += player.skill;
       } else {
