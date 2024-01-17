@@ -37,11 +37,15 @@ const Index = () => {
     const team1 = [];
     const team2 = [];
 
-    // Ensure there is always one goalkeeper in each team if two are available
-    if (goalkeepers.length >= 2) {
+    // Ensure there is exactly one goalkeeper in each team if two are available
+    if (goalkeepers.length === 2) {
       team1.push(goalkeepers[0]);
       team2.push(goalkeepers[1]);
-    } // No need for an else condition, as we only ensure distribution when at least two goalkeepers are available
+    } else if (goalkeepers.length === 1) {
+      // If there is only one goalkeeper available, assign it to team1
+      team1.push(goalkeepers[0]);
+    }
+    // If there are no goalkeepers, neither team receives one - no action needed
 
     // Distribute other players based on skill
     otherPlayers.forEach((player, index) => {
