@@ -49,30 +49,23 @@ const Index = () => {
     const team1 = [];
     const team2 = [];
 
+    // Calculate total skill level for outfield players
+    const totalSkill = otherPlayers.reduce((acc, player) => acc + player.skill, 0);
+
     // Assign one goalkeeper to each team if there are at least two goalkeepers
-    if (goalkeepers.length >= 2) {
+    // Otherwise, assign the goalkeeper later to balance the teams
+    if (goalkeepers.length === 1) {
+      shuffleArray(otherPlayers); // Make sure outfield players' order is randomized
+    } else if (goalkeepers.length >= 2) {
       team1.push(goalkeepers[0]);
       team2.push(goalkeepers[1]);
     }
 
-    // Calculate average skill level for other players
-    const totalSkill = otherPlayers.reduce((acc, player) => acc + player.skill, 0);
-    const averageSkill = totalSkill / otherPlayers.length;
-
     // Split other players into two teams based on skill trying to balance the total skill of each team
     const teamSkills = { team1: 0, team2: 0 };
-    // Split other players into two teams considering both skill balance and team size
+    // Split outfield players into two teams attempting to balance the total skill of each team
     otherPlayers.forEach((player) => {
-      const isTeam1SmallerOrEqual = team1.length <= team2.length;
-      const isSkillLowerOrEqualTeam1 = teamSkills.team1 <= teamSkills.team2;
-
-      if (isTeam1SmallerOrEqual && isSkillLowerOrEqualTeam1) {
-        team1.push(player);
-        teamSkills.team1 += player.skill;
-      } else if (!isTeam1SmallerOrEqual && !isSkillLowerOrEqualTeam1) {
-        team2.push(player);
-        teamSkills.team2 += player.skill;
-      } else if (isTeam1SmallerOrEqual) {
+      if (team1.length <= team2.length) {
         team1.push(player);
         teamSkills.team1 += player.skill;
       } else {
@@ -81,8 +74,18 @@ const Index = () => {
       }
     });
 
-    // Set teams
-    setTeams({ team1, team2 });
+    // If there is only one goalkeeper, assign them to the team with fewer players
+    // or if the number of players is equal, to the team with the lower total skill level
+    if (goalkeepers.length === 1) {
+      if (team1.length < team2.length || (team1.length === team2.length && teamSkills.team1 <= teamSkills.team2)) {
+        team1.push(goalkeepers[0]);
+      } else {
+        team2.push(goalkeepers[0]);
+      }
+    }
+
+    // Sort teams by position and set them
+    setTeams({ team1: team1.sort(sortPlayersByPosition), team2: team2.sort(sortPlayersByPosition) });
 
     // Show toast notification
     toast({
