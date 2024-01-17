@@ -171,8 +171,8 @@ const Index = () => {
         </VStack>
       </HStack>
       <HStack w="100%" justify="space-between" p={5}>
-        <TeamFormation team={teams.team1} side="left" onPlayerDrop={(player) => onDropPlayer(player, "team2")} onDragStart={onDragStart} draggedPlayer={draggedPlayer} />
-        <TeamFormation team={teams.team2} side="right" onPlayerDrop={(player) => onDropPlayer(player, "team1")} onDragStart={onDragStart} draggedPlayer={draggedPlayer} />
+        <TeamFormation team={teams.team1} side="left" onPlayerDrop={(player) => onDropPlayer(player, "team1")} onDragStart={onDragStart} draggedPlayer={draggedPlayer} />
+        <TeamFormation team={teams.team2} side="right" onPlayerDrop={(player) => onDropPlayer(player, "team2")} onDragStart={onDragStart} draggedPlayer={draggedPlayer} />
       </HStack>
     </VStack>
   );
