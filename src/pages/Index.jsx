@@ -26,6 +26,7 @@ const Index = () => {
   const [draggedPlayer, setDraggedPlayer] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const [teams, setTeams] = useState({ team1: [], team2: [] });
+  const [teamsPicked, setTeamsPicked] = useState(false);
   const toast = useToast();
 
   const handleInputChange = (e) => {
@@ -141,11 +142,18 @@ const Index = () => {
         Enter player details (Name, Skill Level, Position):
       </Text>
       <Textarea placeholder="Artur, 5, MF" value={inputValue} onChange={handleInputChange} size="sm" />
-      <Button leftIcon={<FaFutbol />} colorScheme="blue" onClick={pickTeams}>
+      <Button
+        leftIcon={<FaFutbol />}
+        colorScheme="blue"
+        onClick={() => {
+          pickTeams();
+          setTeamsPicked(true);
+        }}
+      >
         Pick Teams
       </Button>
 
-      <HStack w="100%" justify="space-between" p={5}>
+      <HStack w="100%" justify="space-between" p={5} style={{ display: teamsPicked ? "flex" : "none" }}>
         <VStack w="48%">
           <Text fontSize="2xl" color="teal.500">
             Team 1 - Skill {teams.team1.reduce((total, player) => total + player.skill, 0)}
@@ -170,7 +178,7 @@ const Index = () => {
           ))}
         </VStack>
       </HStack>
-      <HStack w="100%" justify="space-between" p={5} align="start">
+      <HStack w="100%" justify="space-between" p={5} align="start" style={{ display: teamsPicked ? "flex" : "none" }}>
         <VStack w="48%">
           <Text fontSize="2xl" fontWeight="bold" color="teal.500" mb={4}>
             Team 1 - Total Skill: {teams.team1.reduce((total, player) => total + player.skill, 0)}
