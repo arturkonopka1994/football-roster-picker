@@ -70,7 +70,7 @@ const Index = () => {
   return (
     <VStack spacing={4} p={5}>
       <Heading as="h1">Football Team Picker</Heading>
-      <Image src="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1MDcxMzJ8MHwxfHNlYXJjaHwxfHxmb290YmFsbHxlbnwwfHx8fDE3MDU1MDc0NDR8MA&ixlib=rb-4.0.3&q=80&w=1080" borderRadius="md" />
+
       <Text fontSize="xl" color="gray.600">
         Enter player details (Name, Skill Level, Position):
       </Text>
