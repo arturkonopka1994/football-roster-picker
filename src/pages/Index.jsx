@@ -97,28 +97,33 @@ const Index = () => {
     });
   };
 
-  const onDropPlayer = useCallback((droppedPlayer, newTeam) => {
-    setTeams((prevTeams) => {
-      // Determine the current team of the player
-      const oldTeam = droppedPlayer.team === "team1" ? "team2" : "team1";
+  const onDropPlayer = useCallback(
+    (draggedPlayer, targetPlayer) => {
+      setTeams((prevTeams) => {
+        // Determine the current teams of the players
+        const draggedPlayerTeam = draggedPlayer.team;
+        const targetPlayerTeam = targetPlayer.team;
 
-      // Remove the player from their current team
-      const oldTeamPlayers = prevTeams[oldTeam].filter((p) => p.name !== droppedPlayer.name);
+        // If players are from different teams, swap them
+        if (draggedPlayerTeam !== targetPlayerTeam) {
+          const newDraggedPlayerTeamPlayers = prevTeams[draggedPlayerTeam].map((p) => (p.name === draggedPlayer.name ? { ...targetPlayer, team: draggedPlayerTeam } : p));
+          const newTargetPlayerTeamPlayers = prevTeams[targetPlayerTeam].map((p) => (p.name === targetPlayer.name ? { ...draggedPlayer, team: targetPlayerTeam } : p));
 
-      // Add the player to the new team and sort
-      const newTeamPlayers = [...prevTeams[newTeam], { ...droppedPlayer, team: newTeam }].sort(sortPlayersByPosition);
+          // Update the teams state with new arrays
+          return {
+            ...prevTeams,
+            [draggedPlayerTeam]: newDraggedPlayerTeamPlayers.sort(sortPlayersByPosition),
+            [targetPlayerTeam]: newTargetPlayerTeamPlayers.sort(sortPlayersByPosition),
+          };
+        }
+        return prevTeams;
+      });
 
-      // Update the teams state with new arrays
-      return {
-        ...prevTeams,
-        [oldTeam]: oldTeamPlayers,
-        [newTeam]: newTeamPlayers,
-      };
-    });
-
-    // Reset the dragged player state
-    setDraggedPlayer(null);
-  }, []);
+      // Reset the dragged player state
+      setDraggedPlayer(null);
+    },
+    [sortPlayersByPosition],
+  );
 
   const onDragStart = useCallback((player) => {
     setDraggedPlayer(player);

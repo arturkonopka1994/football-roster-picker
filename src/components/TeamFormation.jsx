@@ -31,7 +31,9 @@ const TeamFormation = ({ team, side, onPlayerDrop, onDragStart, draggedPlayer })
                 onDragStart={() => onDragStart({ ...player, team: side === "left" ? "team1" : "team2" })}
                 onDrop={(e) => {
                   e.preventDefault();
-                  onPlayerDrop(draggedPlayer, side === "left" ? "team1" : "team2");
+                  if (draggedPlayer && draggedPlayer.name !== player.name) {
+                    onPlayerDrop(draggedPlayer, player);
+                  }
                 }}
                 onDragOver={(e) => e.preventDefault()}
                 opacity={draggedPlayer && draggedPlayer.name === player.name ? 0.5 : 1}
