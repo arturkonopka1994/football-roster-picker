@@ -44,11 +44,12 @@ const Index = () => {
     const team2 = [];
 
     // Distribute goalkeepers evenly between the two teams
-    goalkeepers.forEach((goalkeeper, index) => {
-      if (index % 2 === 0) {
-        team1.push(goalkeeper);
-      } else {
+    // Distribute goalkeepers between the two teams, ensuring one per team
+    goalkeepers.forEach((goalkeeper) => {
+      if (team1.some((player) => player.position === "GK")) {
         team2.push(goalkeeper);
+      } else {
+        team1.push(goalkeeper);
       }
     });
 
