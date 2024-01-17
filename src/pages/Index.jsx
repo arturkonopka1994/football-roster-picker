@@ -14,6 +14,10 @@ const shuffleArray = (array) => {
 const positionOrder = { GK: 1, DF: 2, MF: 3, ST: 4, FW: 4 };
 
 const sortPlayersByPosition = (playerA, playerB) => {
+  if (positionOrder[playerA.position] === positionOrder[playerB.position]) {
+    // Sort by skill in descending order if positions are equal
+    return playerB.skill - playerA.skill;
+  }
   return positionOrder[playerA.position] - positionOrder[playerB.position];
 };
 
