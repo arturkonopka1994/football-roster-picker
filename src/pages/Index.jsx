@@ -103,7 +103,7 @@ const Index = () => {
       <HStack w="100%" justify="space-between" p={5}>
         <VStack w="48%">
           <Text fontSize="2xl" color="teal.500">
-            Team 1
+            Team 1 - Skill {teams.team1.reduce((total, player) => total + player.skill, 0)}
           </Text>
           {teams.team1.sort(sortPlayersByPosition).map((player, i) => (
             <Box key={i} p={2} shadow="md" borderWidth="1px" w="100%">
@@ -115,7 +115,7 @@ const Index = () => {
 
         <VStack w="48%">
           <Text fontSize="2xl" color="orange.500">
-            Team 2
+            Team 2 - Skill {teams.team2.reduce((total, player) => total + player.skill, 0)}
           </Text>
           {teams.team2.sort(sortPlayersByPosition).map((player, i) => (
             <Box key={i} p={2} shadow="md" borderWidth="1px" w="100%">
