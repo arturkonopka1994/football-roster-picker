@@ -22,7 +22,7 @@ const getPlayerPositionStyle = (position, index, total) => {
   };
 };
 
-const TeamFormation = ({ team }) => {
+const TeamFormation = ({ team, side }) => {
   const sortedTeam = team.sort((a, b) => {
     if (a.position === b.position) {
       return b.skill - a.skill;
@@ -38,7 +38,7 @@ const TeamFormation = ({ team }) => {
   }, {});
 
   return (
-    <VStack spacing={2} w="100%" h="600px" position="relative" bg="green.500">
+    <VStack spacing={2} w="100%" h="600px" position="relative" bg={side === "left" ? "green.500" : "blue.500"}>
       <Box position="absolute" top="0" left="0" right="0" bottom="0" bgImage="url('/path-to-football-pitch-image.jpg')" bgPosition="center" bgRepeat="no-repeat" bgSize="cover" opacity="0.2" />
       {sortedTeam.map((player, index) => {
         const positionStyle = getPlayerPositionStyle(player.position, playersByPosition[player.position].indexOf(player), playersByPosition[player.position].length);

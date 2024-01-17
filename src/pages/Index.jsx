@@ -131,8 +131,8 @@ const Index = () => {
         </VStack>
       </HStack>
       <HStack w="100%" justify="space-between" p={5}>
-        <TeamFormation team={teams.team1} />
-        <TeamFormation team={teams.team2} />
+        <TeamFormation team={teams.team1} side="left" />
+        <TeamFormation team={teams.team2} side="right" />
       </HStack>
     </VStack>
   );
