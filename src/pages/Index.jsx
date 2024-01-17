@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { VStack, HStack, Box, Textarea, Button, Text, Heading, useToast } from "@chakra-ui/react";
 import { FaFutbol } from "react-icons/fa";
 import TeamFormation from "../components/TeamFormation";
@@ -23,6 +23,7 @@ const sortPlayersByPosition = (playerA, playerB) => {
 };
 
 const Index = () => {
+  const [draggedPlayer, setDraggedPlayer] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const [teams, setTeams] = useState({ team1: [], team2: [] });
   const toast = useToast();
@@ -93,8 +94,32 @@ const Index = () => {
     });
   };
 
+  const onDropPlayer = useCallback((player, newTeam) => {
+    setTeams((prevTeams) => {
+      // Remove player from their current team
+      const oldTeam = player.team === "team1" ? "team2" : "team1";
+      const newTeams = {
+        ...prevTeams,
+        [oldTeam]: prevTeams[oldTeam].filter((p) => p.name !== player.name),
+        [newTeam]: [...prevTeams[newTeam], player].sort(sortPlayersByPosition),
+      };
+
+      // Recalculate skills
+      newTeams[newTeam] = newTeams[newTeam].map((p) => ({ ...p, team: newTeam }));
+      return newTeams;
+    });
+  }, []);
+
+  const onDragStart = useCallback((player) => {
+    setDraggedPlayer(player);
+  }, []);
+
+  const onDragOver = useCallback((e) => {
+    e.preventDefault(); // Necessary for dropping to work
+  }, []);
+
   return (
-    <VStack spacing={4} p={5}>
+    <VStack spacing={4} p={5} onDragOver={onDragOver}>
       <Heading as="h1">Football Team Picker</Heading>
 
       <Text fontSize="xl" color="gray.600">
@@ -131,8 +156,8 @@ const Index = () => {
         </VStack>
       </HStack>
       <HStack w="100%" justify="space-between" p={5}>
-        <TeamFormation team={teams.team1} side="left" />
-        <TeamFormation team={teams.team2} side="right" />
+        <TeamFormation team={teams.team1} side="left" onPlayerDrop={(player) => onDropPlayer(player, "team1")} onDragStart={onDragStart} draggedPlayer={draggedPlayer} />
+        <TeamFormation team={teams.team2} side="right" onPlayerDrop={(player) => onDropPlayer(player, "team2")} onDragStart={onDragStart} draggedPlayer={draggedPlayer} />
       </HStack>
     </VStack>
   );

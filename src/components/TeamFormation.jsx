@@ -22,7 +22,7 @@ const getPlayerPositionStyle = (position, index, total) => {
   };
 };
 
-const TeamFormation = ({ team, side }) => {
+const TeamFormation = ({ team, side, onPlayerDrop, onDragStart, draggedPlayer }) => {
   const sortedTeam = team.sort((a, b) => {
     if (a.position === b.position) {
       return b.skill - a.skill;
@@ -44,7 +44,21 @@ const TeamFormation = ({ team, side }) => {
         const positionStyle = getPlayerPositionStyle(player.position, playersByPosition[player.position].indexOf(player), playersByPosition[player.position].length);
         return (
           <SlideFade key={index} in={true} offsetY="20px">
-            <Box p={2} color="white" borderRadius="md" {...positionStyle} zIndex="1">
+            <Box
+              p={2}
+              color="white"
+              borderRadius="md"
+              {...positionStyle}
+              zIndex="1"
+              draggable
+              onDragStart={() => onDragStart({ ...player, team: side === "left" ? "team1" : "team2" })}
+              onDrop={(e) => {
+                e.preventDefault();
+                onPlayerDrop(draggedPlayer, side === "left" ? "team1" : "team2");
+              }}
+              onDragOver={(e) => e.preventDefault()}
+              opacity={draggedPlayer && draggedPlayer.name === player.name ? 0.5 : 1}
+            >
               {player.name}
             </Box>
           </SlideFade>
