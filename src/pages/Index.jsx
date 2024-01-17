@@ -43,22 +43,27 @@ const Index = () => {
     const team1 = [];
     const team2 = [];
 
-    // Distribute goalkeepers evenly between the two teams
-    // Distribute goalkeepers between the two teams, ensuring one per team
-    goalkeepers.forEach((goalkeeper) => {
-      if (team1.some((player) => player.position === "GK")) {
-        team2.push(goalkeeper);
-      } else {
-        team1.push(goalkeeper);
+    // Assign one goalkeeper to each team if available
+    if (goalkeepers.length > 0) {
+      team1.push(goalkeepers[0]);
+      if (goalkeepers.length > 1) {
+        team2.push(goalkeepers[1]);
       }
-    });
+    }
 
-    // Distribute other players based on skill
-    otherPlayers.forEach((player, index) => {
-      if (index % 2 === 0) {
+    // Calculate average skill level for other players
+    const totalSkill = otherPlayers.reduce((acc, player) => acc + player.skill, 0);
+    const averageSkill = totalSkill / otherPlayers.length;
+
+    // Split other players into two teams based on skill trying to balance the total skill of each team
+    const teamSkills = { team1: 0, team2: 0 };
+    otherPlayers.forEach((player) => {
+      if (teamSkills.team1 <= teamSkills.team2) {
         team1.push(player);
+        teamSkills.team1 += player.skill;
       } else {
         team2.push(player);
+        teamSkills.team2 += player.skill;
       }
     });
 
