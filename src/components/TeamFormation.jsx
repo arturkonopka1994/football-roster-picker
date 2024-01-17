@@ -33,6 +33,8 @@ const TeamFormation = ({ team, side, onPlayerDrop, onDragStart, draggedPlayer })
                   e.preventDefault();
                   if (draggedPlayer && draggedPlayer.name !== player.name) {
                     onPlayerDrop(draggedPlayer, side === "left" ? "team1" : "team2");
+                    // Reset the dragged player state to allow for subsequent swaps.
+                    onDragStart(null);
                   }
                 }}
                 onDragOver={(e) => e.preventDefault()}
