@@ -43,12 +43,10 @@ const Index = () => {
     const team1 = [];
     const team2 = [];
 
-    // Assign one goalkeeper to each team if available
-    if (goalkeepers.length > 0) {
+    // Assign one goalkeeper to each team if there are at least two goalkeepers
+    if (goalkeepers.length >= 2) {
       team1.push(goalkeepers[0]);
-      if (goalkeepers.length > 1) {
-        team2.push(goalkeepers[1]);
-      }
+      team2.push(goalkeepers[1]);
     }
 
     // Calculate average skill level for other players
