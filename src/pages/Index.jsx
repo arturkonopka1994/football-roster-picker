@@ -94,20 +94,27 @@ const Index = () => {
     });
   };
 
-  const onDropPlayer = useCallback((player, newTeam) => {
+  const onDropPlayer = useCallback((droppedPlayer, newTeam) => {
     setTeams((prevTeams) => {
-      // Remove player from their current team
-      const oldTeam = player.team === "team1" ? "team2" : "team1";
-      const newTeams = {
-        ...prevTeams,
-        [oldTeam]: prevTeams[oldTeam].filter((p) => p.name !== player.name),
-        [newTeam]: [...prevTeams[newTeam], player].sort(sortPlayersByPosition),
-      };
+      // Determine the current team of the player
+      const oldTeam = droppedPlayer.team === "team1" ? "team2" : "team1";
 
-      // Recalculate skills
-      newTeams[newTeam] = newTeams[newTeam].map((p) => ({ ...p, team: newTeam }));
-      return newTeams;
+      // Remove the player from their current team
+      const oldTeamPlayers = prevTeams[oldTeam].filter((p) => p.name !== droppedPlayer.name);
+
+      // Add the player to the new team and sort
+      const newTeamPlayers = [...prevTeams[newTeam], { ...droppedPlayer, team: newTeam }].sort(sortPlayersByPosition);
+
+      // Update the teams state with new arrays
+      return {
+        ...prevTeams,
+        [oldTeam]: oldTeamPlayers,
+        [newTeam]: newTeamPlayers,
+      };
     });
+
+    // Reset the dragged player state
+    setDraggedPlayer(null);
   }, []);
 
   const onDragStart = useCallback((player) => {
