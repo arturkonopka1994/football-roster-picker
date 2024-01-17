@@ -42,7 +42,7 @@ const TeamFormation = ({ team, side, onPlayerDrop, onDragStart, draggedPlayer })
                 }}
                 opacity={draggedPlayer && draggedPlayer.name === player.name ? 0.5 : 1}
               >
-                {`${player.name} ${player.position}`}
+                {`${player.name} ${player.position} - Skill: ${player.skill}`}
               </Box>
             </SlideFade>
           ))}
