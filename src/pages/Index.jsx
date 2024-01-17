@@ -100,30 +100,23 @@ const Index = () => {
   const onDropPlayer = useCallback(
     (draggedPlayer, targetPlayer, targetTeam) => {
       setTeams((prevTeams) => {
-        // Ensure that team names are correctly used when accessing prevTeams
-        const sourceTeam = draggedPlayer.team === "team1" ? "team1" : "team2";
-        const destinationTeam = targetTeam === "team1" ? "team1" : "team2";
+        const sourceTeam = draggedPlayer.team;
+        const destinationTeam = targetTeam;
 
-        if (sourceTeam !== destinationTeam) {
-          // Check if the teams exist in the prevTeams object before attempting to filter
-          const updatedSourceTeam = prevTeams[sourceTeam] ? prevTeams[sourceTeam].filter((p) => p.name !== draggedPlayer.name) : [];
-          const updatedDestinationTeam = prevTeams[destinationTeam] ? prevTeams[destinationTeam].filter((p) => p.name !== targetPlayer.name) : [];
+        // Remove the dragged player from the source team
+        const updatedSourceTeam = prevTeams[sourceTeam].filter((p) => p.name !== draggedPlayer.name);
 
-          // Add the dragged player to the destination team
-          updatedDestinationTeam.push(draggedPlayer);
-          // Add the target player to the source team, if exists
-          if (targetPlayer.name) updatedSourceTeam.push(targetPlayer);
+        // If the target player exists, remove it from the destination team and add it to the source team
+        const updatedDestinationTeam = targetPlayer.name ? prevTeams[destinationTeam].filter((p) => p.name !== targetPlayer.name).concat(draggedPlayer) : prevTeams[destinationTeam].concat(draggedPlayer);
 
-          // Sort both teams by position and update state
-          return {
-            ...prevTeams,
-            [sourceTeam]: updatedSourceTeam.sort(sortPlayersByPosition),
-            [destinationTeam]: updatedDestinationTeam.sort(sortPlayersByPosition),
-          };
-        }
-
-        return prevTeams;
+        // Sort both teams by position and update state
+        return {
+          ...prevTeams,
+          [sourceTeam]: updatedSourceTeam.sort(sortPlayersByPosition),
+          [destinationTeam]: updatedDestinationTeam.sort(sortPlayersByPosition),
+        };
       });
+      setDraggedPlayer(null); // Reset the dragged player state after drop
       setDraggedPlayer(null); // Reset the dragged player state after drop
     },
     [sortPlayersByPosition],
