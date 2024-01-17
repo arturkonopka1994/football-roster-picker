@@ -11,6 +11,12 @@ const shuffleArray = (array) => {
   return array;
 };
 
+const positionOrder = { GK: 1, DF: 2, MF: 3, ST: 4, FW: 4 };
+
+const sortPlayersByPosition = (playerA, playerB) => {
+  return positionOrder[playerA.position] - positionOrder[playerB.position];
+};
+
 const Index = () => {
   const [inputValue, setInputValue] = useState("");
   const [teams, setTeams] = useState({ team1: [], team2: [] });
@@ -86,7 +92,7 @@ const Index = () => {
           <Text fontSize="2xl" color="teal.500">
             Team 1
           </Text>
-          {teams.team1.map((player, i) => (
+          {teams.team1.sort(sortPlayersByPosition).map((player, i) => (
             <Box key={i} p={2} shadow="md" borderWidth="1px" w="100%">
               <Text>{player.name}</Text>
               <Text>{`Skill: ${player.skill} | Pos: ${player.position}`}</Text>
@@ -98,7 +104,7 @@ const Index = () => {
           <Text fontSize="2xl" color="orange.500">
             Team 2
           </Text>
-          {teams.team2.map((player, i) => (
+          {teams.team2.sort(sortPlayersByPosition).map((player, i) => (
             <Box key={i} p={2} shadow="md" borderWidth="1px" w="100%">
               <Text>{player.name}</Text>
               <Text>{`Skill: ${player.skill} | Pos: ${player.position}`}</Text>
