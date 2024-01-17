@@ -5,28 +5,38 @@ import TeamFormation from "../components/TeamFormation";
 // Helper functions and imports...
 
 const Index = () => {
-  // State hooks and other functions...
-  // State hooks and other functions...
+  const [teamOne, setTeamOne] = useState([]);
+  const [teamTwo, setTeamTwo] = useState([]);
+
+  // Handler functions such as onDragOver, onDragStart, onPlayerDrop...
 
   return (
-    <VStack spacing={4} p={5} onDragOver={onDragOver}>
-      {/* ... heading, text, textarea, and button components ... */}
+    <VStack spacing={4} p={5}>
+      <Heading as="h1" size="xl" my={6}>
+        Team Picker
+      </Heading>
+
+      <Textarea placeholder="Enter team 1 players here..." />
+      <Button colorScheme="blue">Set Team 1</Button>
+
+      <Textarea placeholder="Enter team 2 players here..." />
+      <Button colorScheme="teal">Set Team 2</Button>
 
       <HStack w="100%" justify="space-between" p={5}>
         <VStack w="48%">
-          {/* ... team 1 heading and content ... */}
-          {/* ... team 1 player list ... */}
+          <Heading as="h3" size="lg">
+            Team 1 Formation
+          </Heading>
+          <TeamFormation team={teamOne} side="left" />
         </VStack>
 
         <VStack w="48%">
-          {/* ... team 2 heading and content ... */}
-          {/* ... team 2 player list ... */}
+          <Heading as="h3" size="lg">
+            Team 2 Formation
+          </Heading>
+          <TeamFormation team={teamTwo} side="right" />
         </VStack>
       </HStack>
-
-      {/* ... team formations ... */}
-
-      {/* ... team formations ... */}
     </VStack>
   );
 };
