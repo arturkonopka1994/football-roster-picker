@@ -119,8 +119,7 @@ const Index = () => {
         return prevTeams;
       });
 
-      // Reset the dragged player state
-      setDraggedPlayer(null);
+      // The dragged player state should be reset properly in the TeamFormation onDrop event handler
     },
     [sortPlayersByPosition],
   );
