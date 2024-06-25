@@ -22,6 +22,8 @@ const sortPlayersByPosition = (playerA, playerB) => {
   return positionOrder[playerA.position] - positionOrder[playerB.position];
 };
 
+const validPositions = ["GK", "DF", "MF", "FW", "ST"];
+
 const Index = () => {
   const [draggedPlayer, setDraggedPlayer] = useState(null);
   const [inputValue, setInputValue] = useState("");
@@ -36,6 +38,16 @@ const Index = () => {
   const pickTeams = () => {
     const players = inputValue.split("\n").map((player) => {
       const [name, skill, position] = player.split(",").map((item) => item.trim());
+      if (!validPositions.includes(position)) {
+        toast({
+          title: "Invalid Position",
+          description: `The position "${position}" is not valid. Valid positions are: ${validPositions.join(", ")}`,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+        throw new Error(`Invalid position: ${position}`);
+      }
       return { name, skill: parseInt(skill, 10), position };
     });
 
