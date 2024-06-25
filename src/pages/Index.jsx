@@ -54,9 +54,10 @@ const Index = () => {
     const goalkeepers = players.filter((player) => player.position === "GK");
 
     if (goalkeepers.length > 2) {
+      const goalkeeperCount = goalkeepers.length;
       toast({
         title: "Warning",
-        description: "There are 3 goalkeepers listed.",
+        description: `${goalkeeperCount} goalkeepers listed. Only 2 allowed.`,
         status: "warning",
         duration: 5000,
         isClosable: true,
