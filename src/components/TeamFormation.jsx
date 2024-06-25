@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, VStack, SlideFade, Flex } from "@chakra-ui/react";
 
-const TeamFormation = ({ team, side, onPlayerDrop, onDragStart, draggedPlayer }) => {
+const TeamFormation = ({ team, side, onPlayerDrop, onDragStart, draggedPlayer, showSkill = true }) => {
   // Create an object to hold players grouped by their position
   const formation = {
     GK: [],
@@ -42,7 +42,7 @@ const TeamFormation = ({ team, side, onPlayerDrop, onDragStart, draggedPlayer })
                 }}
                 opacity={draggedPlayer && draggedPlayer.name === player.name ? 0.5 : 1}
               >
-                {`${player.name} ${player.position} - Skill: ${player.skill}`}
+                {`${player.name} ${player.position}${showSkill ? ` - Skill: ${player.skill}` : ""}`}
               </Box>
             </SlideFade>
           ))}
