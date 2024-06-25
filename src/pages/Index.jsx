@@ -52,6 +52,16 @@ const Index = () => {
     });
 
     const goalkeepers = players.filter((player) => player.position === "GK");
+
+    if (goalkeepers.length === 3) {
+      toast({
+        title: "Warning",
+        description: "There are 3 goalkeepers listed.",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
     const otherPlayers = players.filter((player) => player.position !== "GK");
 
     // Shuffle arrays to randomize player order
