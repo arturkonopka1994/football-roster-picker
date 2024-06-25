@@ -153,7 +153,7 @@ const Index = () => {
       <Text fontSize="xl" color="gray.600">
         Enter player details (Name, Skill Level, Position):
       </Text>
-      <Textarea placeholder="Artur, 5, MF" value={inputValue} onChange={handleInputChange} size="sm" />
+      <Textarea placeholder="Artur, 5, MF (Valid positions: GK, DF, MF, FW, ST)" value={inputValue} onChange={handleInputChange} size="sm" />
       <Button
         leftIcon={<FaFutbol />}
         colorScheme="blue"
